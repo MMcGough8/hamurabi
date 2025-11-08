@@ -1,4 +1,4 @@
-package com.hamurabi;
+package com.hammurabi;
 
 import static org.junit.Assert.assertTrue;
 

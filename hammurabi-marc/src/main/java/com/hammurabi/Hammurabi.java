@@ -1,4 +1,4 @@
-package com.hamurabi;
+package com.hammurabi;
 
 import java.util.InputMismatchException;
 import java.util.Random;
@@ -141,7 +141,7 @@ public class Hammurabi {
                 }
             }
 
-    public int askHowManyAcresToPlant(int acresOwned, int flock, int bushels)
+    public int askHowManyAcresToPlant(int acresOwned, int flock, int bushels) {
             while (true) {
                 int acresPlanted = getNumber("\nHow many acres shall thy farmers PLANT and CULTIVATE, O Great Hammurabi?");
                 if (this.storedBushels >= acresPlanted * 2 && acresPlanted <= this.flock * 10) {
@@ -167,7 +167,7 @@ public class Hammurabi {
         
 
 
-        
+
                                /**
   * Prints the given message (which should ask the user for some integral
   * quantity), and returns the number entered by the user. If the user's
@@ -190,3 +190,4 @@ public class Hammurabi {
             }
         }
     }
+}
