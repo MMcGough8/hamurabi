@@ -103,7 +103,7 @@ public class Hammurabi {
                 }
                                      
             }
-    public int askHowManyAcresToSell(int acresOwned) {
+    public void askHowManyAcresToSell(int acresOwned) {
         while (true) {
             int sellAcresOwned = getNumber("\nGREAT HAMMURABI, THE SCRIBES AWAIT THY DECREE!\n\n" +
                                            "Dost thou wish to SELL lands from thy dominion?\n\n" +
@@ -127,11 +127,11 @@ public class Hammurabi {
  
     public int askHowMuchGrainToFeedPeople(int bushels) {
         while (true) {  
-            int grainUsedToFeed = getNumber("\nO GREAT HAMMURABI, speak now:\n" +
+            int grainForFood = getNumber("\nO GREAT HAMMURABI, speak now:\n" +
                                              "How many bushels of grain shall sustain thy flock of " + this.flock + " souls?");
-                if (this.storedBushels >= grainUsedToFeed) {
-                    this.storedBushels -= grainUsedToFeed;
-                        return grainUsedToFeed;
+                if (this.storedBushels >= grainForFood) {
+                    this.storedBushels -= grainForFood;
+                        return grainForFood;
                 } else {
                     System.out.println("O GREAT HAMMURABI, SURELY THOU DOST JEST!\n\n" +
                                        "The Royal Storehouse contains but " + this.storedBushels + " bushels of grain!\n\n" +
@@ -141,16 +141,33 @@ public class Hammurabi {
                 }
             }
 
-    int askHowManyAcresToPlant(int acresOwned, int flock, int bushels)
-        sanity check - does the player have enough acres, grain, and people to do the planting? 
-        Leftover grain goes into storage.
-        Response if False - public void printInsufficientResources(String resourceType, int available, int requested) {
-            System.out.println("INCONCEIVABLE, O GREAT HAMMURABI!\n\n" +
-                               "Thy decree demands " + requested + " " + resourceType + ",\n" +
-                               "yet thou possessest but " + available + "!\n\n" +
-                               "Even the mighty gods cannot conjure resources from the ether!\n\n" +
-                               "Speak again with wisdom, O Exalted One!");
+    public int askHowManyAcresToPlant(int acresOwned, int flock, int bushels)
+            while (true) {
+                int acresPlanted = getNumber("\nHow many acres shall thy farmers PLANT and CULTIVATE, O Great Hammurabi?");
+                if (this.storedBushels >= acresPlanted * 2 && acresPlanted <= this.flock * 10) {
+                        return acresPlanted;
+                } else {
+                    if (storedBushels < acresPlanted * 2) {
+                        System.out.println("INCONCEIVABLE, O GREAT HAMMURABI!\n\n" +
+                                           "The Royal Storehouse contains but " + 
+                                           this.storedBushels + " bushels of grain!\n\n" +
+                                           "Thy command exceeds the bounty bestowed upon thee by Raz!\n\n" +
+                                           "The scribes implore thee to reconsider thy decree, O Exalted One!\n");
+                    } else if (this.flock * 10 < acresPlanted) {
+                        System.out.println("MADNESS, O GREAT HAMMURABI!\n\n" +
+                                           "Thy flock numbers only " + this.flock + " souls!\n\n" +
+                                           "Each farmer may tend but 10 acres, yet thy command demands more hands than exist!\n\n" +
+                                           "Even Kris and Paul cannot summon workers from the void!\n\n" +
+                                           "Reconsider thy command, lest the fields lie fallow!\n");
+                    }
+                }
+            }
+        }   
+        
+        
 
+
+        
                                /**
   * Prints the given message (which should ask the user for some integral
   * quantity), and returns the number entered by the user. If the user's
