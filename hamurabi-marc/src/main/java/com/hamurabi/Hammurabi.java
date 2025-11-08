@@ -123,22 +123,23 @@ public class Hammurabi {
                                        "Speak a wiser decree, O Exalted One!");
                     }
                 }
-    
-                                           sanity check - does the player have enough acres to sell?
-        Response if False - System.out.println("IMPOSSIBLE, O GREAT HAMMURABI!\n\n" +
-                                               "Thy dominion encompasses but " + this.acresOwned + " acres of land!\n\n" +
-                                               "Thou canst not plant seeds upon fields that exist not!\n\n" +
-                                               "Raz herself cannot harvest from phantom soil!\n\n" +
-                                               "Speak a wiser decree, O Exalted One!");
-
-
-    int askHowMuchGrainToFeedPeople(int bushels)
-        sanity check - does the player have enough bushels?
-            Response if False - System.out.println("O GREAT HAMMURABI, SURELY THOU DOST JEST!\n\n" +
-                                                   "The Royal Storehouse contains but " + this.storedBushels + " bushels of grain!\n\n" +
-                                                   "Thy command exceeds the bounty bestowed upon thee by Raz!\n\n" +
-                                                   "The scribes implore thee to reconsider thy decree, O Exalted One!");
-
+            }
+ 
+    public int askHowMuchGrainToFeedPeople(int bushels) {
+        while (true) {  
+            int grainUsedToFeed = getNumber("\nO GREAT HAMMURABI, speak now:\n" +
+                                             "How many bushels of grain shall sustain thy flock of " + this.flock + " souls?");
+                if (this.storedBushels >= grainUsedToFeed) {
+                    this.storedBushels -= grainUsedToFeed;
+                        return grainUsedToFeed;
+                } else {
+                    System.out.println("O GREAT HAMMURABI, SURELY THOU DOST JEST!\n\n" +
+                                       "The Royal Storehouse contains but " + this.storedBushels + " bushels of grain!\n\n" +
+                                       "Thy command exceeds the bounty bestowed upon thee by Raz!\n\n" +
+                                       "The scribes implore thee to reconsider thy decree, Exalted One!");
+                    }
+                }
+            }
 
     int askHowManyAcresToPlant(int acresOwned, int flock, int bushels)
         sanity check - does the player have enough acres, grain, and people to do the planting? 
