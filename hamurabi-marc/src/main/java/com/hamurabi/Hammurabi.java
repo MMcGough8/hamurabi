@@ -4,13 +4,14 @@ import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
+
 public class Hammurabi {
    Random rand = new Random();
    Scanner scanner = new Scanner(System.in);
    
     int year = 1;
     int starved = 0;
-    int journeyed = 5;
+    int journeymen = 5;
     int flock = 100;
     int harvested = 3000;
     int grainPerAcre = 3;
@@ -48,7 +49,7 @@ public class Hammurabi {
         System.out.println( "\nHAIL, MIGHTY HAMMURABI, CHOSEN SHEPHERD OF SUMER!\n" +
                             "Thou art in year " + this.year + " of thy sacred ten-year reign!\n\n" +
                             "By the mercy of the gods, " + this.starved + " among thy people have perished from hunger in the year past.\n\n" +
-                            "Kris and Paul have smiled upon thee! " + this.journeyed + 
+                            "Kris and Paul have smiled upon thee! " + this.journeymen + 
                             " souls have journeyed from distant lands to dwell beneath thy benevolent rule.\n\n" +
                             "Thy flock now numbers " + this.flock + " SOULS, entrusted to thy wisdom and care.\n\n" +
                             "By the grace of Raz, God of Agriculture, thy fields have yielded " + this.harvested + 
@@ -83,18 +84,47 @@ public class Hammurabi {
                            "THE GAME HAS ENDED");
     }
 
-    int askHowManyAcresToBuy (int price, int bushels)
-        sanity check - does the player have enough bushels?
-        Response if False - System.out.println("FOLLY, O GREAT HAMMURABI!\n\n" +
-                                               "Dost thou mock thy faithful scribes?!\n\n" +
-                                               "The Royal Storehouse contains a mere " + this.storedBushels + " bushels!\n\n" +
-                                               "Thy decree demands grain that exists only in the realm of dreams!\n\n" +
-                                               "Kris and Paul frown upon such impossible commands!\n\n" +
-                                               "Speak again, O Exalted One, with wisdom befitting thy station!");
-
-
-    int askHowManyAcresToSell(int acresOwned)
-        sanity check - does the player have enough acres to sell?
+    public int askHowManyAcresToBuy(int price, int bushels) {
+        while (true) {
+            int buyAcres = getNumber("O GREAT HAMMURABI, The MERCHANTS APPROACH!\n\n" + 
+                                     "How many acres of land dost thou wish to ACQUIRE from the merchants?");
+                if (this.storedBushels >= price * buyAcres) {
+                    this.acresOwned += buyAcres;
+                    this.storedBushels -= price *buyAcres;
+                        return buyAcres;
+                } else {
+                    System.out.println("FOLLY, O GREAT HAMMURABI!\n\n" +
+                                       "Dost thou mock thy faithful scribes?!\n\n" +
+                                       "The Royal Storehouse contains a mere " + this.storedBushels + " bushels!\n\n" +
+                                       "Thy decree demands grain that exists only in the realm of dreams!\n\n" +
+                                       "Kris and Paul frown upon such impossible commands!\n\n" +
+                                       "Speak again, O Exalted One, with wisdom befitting thy station!");
+                    }
+                }
+                                     
+            }
+    public int askHowManyAcresToSell(int acresOwned) {
+        while (true) {
+            int sellAcresOwned = getNumber("\nGREAT HAMMURABI, THE SCRIBES AWAIT THY DECREE!\n\n" +
+                                           "Dost thou wish to SELL lands from thy dominion?\n\n" +
+                                           "Thy kingdom holds " + this.acresOwned + " acres of fertile soil.\n" +
+                                           "The merchants offer " + this.landPrice + " bushels for each acre.\n\n" +
+                                           "Speak the number of acres thou wouldst relinquish,\n" +
+                                           "or decree ZERO to keep all thy lands:");
+                if (this.acresOwned >= sellAcresOwned) {
+                    this.acresOwned -= sellAcresOwned;
+                    this.storedBushels += sellAcresOwned * this.landPrice;
+                        return;
+                } else {
+                    System.out.println("IMPOSSIBLE, O GREAT HAMMURABI!\n\n" +
+                                       "Thy dominion encompasses but " + this.acresOwned + " acres of land!\n\n" +
+                                       "Thou canst not plant seeds upon fields that exist not!\n\n" +
+                                       "Raz herself cannot harvest from phantom soil!\n\n" +
+                                       "Speak a wiser decree, O Exalted One!");
+                    }
+                }
+    
+                                           sanity check - does the player have enough acres to sell?
         Response if False - System.out.println("IMPOSSIBLE, O GREAT HAMMURABI!\n\n" +
                                                "Thy dominion encompasses but " + this.acresOwned + " acres of land!\n\n" +
                                                "Thou canst not plant seeds upon fields that exist not!\n\n" +
@@ -110,7 +140,7 @@ public class Hammurabi {
                                                    "The scribes implore thee to reconsider thy decree, O Exalted One!");
 
 
-    int askHowManyAcresToPlant(int acresOwned, int population, int bushels)
+    int askHowManyAcresToPlant(int acresOwned, int flock, int bushels)
         sanity check - does the player have enough acres, grain, and people to do the planting? 
         Leftover grain goes into storage.
         Response if False - public void printInsufficientResources(String resourceType, int available, int requested) {
@@ -119,4 +149,26 @@ public class Hammurabi {
                                "yet thou possessest but " + available + "!\n\n" +
                                "Even the mighty gods cannot conjure resources from the ether!\n\n" +
                                "Speak again with wisdom, O Exalted One!");
-}
+
+                               /**
+  * Prints the given message (which should ask the user for some integral
+  * quantity), and returns the number entered by the user. If the user's
+  * response isn't an integer, the question is repeated until the user
+  * does give a integer response.
+  * 
+  * @param message The request to present to the user.
+  * @return The user's numeric response.
+  */
+
+
+     public int getNumber(String message) {
+        while (true) {
+            System.out.print(message);
+            try {
+                return scanner.nextInt();
+            }
+            catch (InputMismatchException e) {
+                System.out.println("\"" + scanner.next() + "\" isn't a number!");
+            }
+        }
+    }
