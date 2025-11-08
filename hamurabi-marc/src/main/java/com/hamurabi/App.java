@@ -1,13 +1,23 @@
 package com.hamurabi;
-
+import java.util.Random;        
+import java.util.Scanner;
 /**
- * Hello world!
- *
- */
-public class App 
-{
-    public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
+ * Marc McGough
+ * Rip Harambe
+ */            
+
+
+public class App {         
+    Random rand = new Random();  
+    Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) { 
+        new App().playGame();
     }
+
+    void playGame() {
+        
+    }
+
+    
 }
