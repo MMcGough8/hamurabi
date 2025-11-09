@@ -4,23 +4,83 @@ import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
-
 public class Hammurabi {
-   Random rand = new Random();
-   Scanner scanner = new Scanner(System.in);
+    Random rand = new Random();
+    Scanner scanner = new Scanner(System.in);
    
-    int year = 1;
-    int starved = 0;
-    int journeymen = 5;
-    int flock = 100;
-    int harvested = 3000;
-    int grainPerAcre = 3;
-    int storedBushels = 2800;
-    int clankersAte = 200;
-    int acresOwned = 1000;
-    int landPrice = 19;
+        int year = 1;
+        int starved = 0;
+        int journeymen = 5;
+        int flock = 100;
+        int harvested = 3000;
+        int grainPerAcre = 3;
+        int storedBushels = 2800;
+        int clankersAte = 200;
+        int acresOwned = 1000;
+        int landPrice = 19;
+        int totalLandBought = 0;
+        int totalStarved = 0;
+
+    public static void main(String[] args) {
+        Hammurabi game = new Hammurabi();
+        game.playGame();
+    }
     
-    
+    public void playGame() {
+        printRules();
+
+        while (year <= 10) {
+            printSummary();
+
+            int buyAcres = askHowManyAcresToBuy(landPrice, storedBushels);
+            if (buyAcres == 0) {
+                askHowManyAcresToSell(acresOwned);
+        }
+            int grainForFood = askHowMuchGrainToFeedPeople(storedBushels);
+            int acresPlanted = askHowManyAcresToPlant(acresOwned, flock, storedBushels);
+            storedBushels -= acresPlanted * 2;
+            processYearEnd(grainForFood, acresPlanted);
+            year++;
+    }
+
+        printEndGame();
+        scanner.close();
+    }
+
+    private void processYearEnd(int grainForFood, int acresPlanted) {
+        int grainNeeded = flock * 20;
+        starved = (grainNeeded - grainForFood) / 20;
+        if (starved < 0) starved = 0;
+        totalStarved += starved;
+        flock -= starved;
+
+        if (starved > flock * 0.45) {
+            System.out.println("\nTHOU HAST FAILED THY PEOPLE!\n" +
+                               "More than 45% of thy flock hath perished!\n" +
+                               "The people rise in rebellion!\n" +
+                               "Thy reign ends in disgrace!");
+            System.exit(0);
+        }
+        if (starved == 0) {
+            journeymen = rand.nextInt(6);
+            flock += journeymen;
+        } else {
+            journeymen = 0;
+        }
+
+        grainPerAcre = rand.nextInt(6) * 1;
+        harvested = acresPlanted * grainPerAcre;
+        storedBushels += harvested;
+
+        if (rand.nextInt(100) < 40) {
+                clankersAte = storedBushels / (rand.nextInt(5) + 1);
+                storedBushels -= clankersAte;
+        } else {
+                clankersAte = 0;
+        }
+
+        landPrice = rand.nextInt(7) + 17;
+    }
 
     public void printRules() {
         System.out.println("HAIL, MIGHTY HAMMURABI, CHOSEN SHEPHERD OF SUMER! \n\n" +
@@ -99,9 +159,9 @@ public class Hammurabi {
                                        "Thy decree demands grain that exists only in the realm of dreams!\n\n" +
                                        "Kris and Paul frown upon such impossible commands!\n\n" +
                                        "Speak again, O Exalted One, with wisdom befitting thy station!");
+                        
                     }
-                }
-                                     
+                }                   
             }
     public void askHowManyAcresToSell(int acresOwned) {
         while (true) {
@@ -162,13 +222,8 @@ public class Hammurabi {
                     }
                 }
             }
-        }   
-        
-        
-
-
-
-                               /**
+        }
+ /**
   * Prints the given message (which should ask the user for some integral
   * quantity), and returns the number entered by the user. If the user's
   * response isn't an integer, the question is repeated until the user

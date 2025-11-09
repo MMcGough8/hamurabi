@@ -9,7 +9,7 @@ package com.hammurabi;
 public class App {     
 
     public static void main(String[] args) { 
-        new Hammurabi()
+        new Hammurabi();
     }
    
 }
