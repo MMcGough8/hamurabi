@@ -53,7 +53,7 @@ public class Hammurabi {
         totalStarved += starved;
         flock -= starved;
 
-        if (uprising(flock, starved)) {
+        if (uprising(flock +starved, starved)) {
             System.out.println("\nTHOU HAST FAILED THY PEOPLE!\n" +
                                "More than 45% of thy flock hath perished!\n" +
                                "An UPRISING HAS OCCURRED!\n" +
@@ -64,10 +64,10 @@ public class Hammurabi {
 
         int plagueDeads = plagueDeaths(flock);
         if (plagueDeads > 0) {
-            int plagueDeaths = flock / 2;
-            flock -= plagueDeaths;
+            flock -= plagueDeads;
+            totalStarved += plagueDeads;
             System.out.println("\nA TERRIBLE PLAGUE HATH STRICKEN THY PEOPLE!\n" +
-                               plagueDeaths + " souls have perished!\n");
+                               plagueDeads + " souls have perished!\n");
         }
 
         if (starved == 0 && plagueDeads == 0) {
@@ -100,8 +100,8 @@ public class Hammurabi {
     }
 
     public int starvationDeaths(int flock, int grainForFood) {
-        int grainNeeded = flock * 20;
-        int deaths = (grainNeeded - grainForFood) / 20;
+        int peopleFed = grainForFood / 20;
+        int deaths = flock - peopleFed;
         return deaths < 0 ? 0 : deaths;
     }
     public boolean uprising(int flock, int starved) {
@@ -124,7 +124,7 @@ public class Hammurabi {
     }
 
     public void printRules() {
-        System.out.println("HAIL, MIGHTY HAMMURABI, CHOSEN SHEPHERD OF SUMER! \n\n" +
+        System.out.println("\n HAIL, MIGHTY HAMMURABI, CHOSEN SHEPHERD OF SUMER! \n\n" +
                            "The gods have blessed thee with dominion over our sacred city-state.\n" +
                            "May Kris grant thee wisdom and Paul bestow prosperity upon thy reign!\n\n" +
                            "---\n\nTHE FIRST YEAR OF THY REIGN\n\n" +
@@ -133,7 +133,7 @@ public class Hammurabi {
                            "Land Under Thy Dominion: 1,000 acres\n" +
                            "Worth of One Acre: 19 bushels of grain\n\n" +
                            "The Harvest: By the grace of Raz, thy fields yielded 3 bushels per acre\n" +
-                           "Misfortune: The cursed rats have devoured 200 bushels from thy stores\n" +
+                           "Misfortune: The cursed clankers have devoured 200 bushels from thy stores\n" +
                            "The Dead: None have perished (the gods smile upon thy ascension!)\n\n" +
                            "---\n\nO GREAT HAMMURABI, THOU MUST NOW DECREE:\n\n" +
                            "The scribes await thy commands:\n\n" +
