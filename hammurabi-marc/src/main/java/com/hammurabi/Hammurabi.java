@@ -206,8 +206,7 @@ public class Hammurabi {
             }
     public void askHowManyAcresToSell(int acresOwned) {
         while (true) {
-            int sellAcresOwned = getNumber("\nGREAT HAMMURABI, THE SCRIBES AWAIT THY DECREE!\n\n" +
-                                           "Dost thou wish to SELL lands from thy dominion?\n\n" +
+            int sellAcresOwned = getNumber("\nDost thou wish to SELL lands from thy dominion?\n\n" +
                                            "Thy kingdom holds " + this.acresOwned + " acres of fertile soil.\n" +
                                            "The merchants offer " + this.landPrice + " bushels for each acre.\n\n" +
                                            "Speak the number of acres thou wouldst relinquish,\n" +
