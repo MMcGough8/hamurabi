@@ -68,7 +68,7 @@ public class Hammurabi {
             journeymen = 0;
         }
 
-        grainPerAcre = rand.nextInt(6) * 1;
+        grainPerAcre = rand.nextInt(6) + 1;
         harvested = acresPlanted * grainPerAcre;
         storedBushels += harvested;
 
@@ -137,7 +137,7 @@ public class Hammurabi {
                            "Souls under thy care: " + this.flock + "\n" +
                            "Grain in the Royal Storehouse: " + this.storedBushels + " bushels\n" +
                            "Acres of fertile land: " + this.acresOwned + "\n" +
-                           "Total who perished from starvation during thy reign: " + this.starved + "\n\n" +
+                           "Total who perished from starvation during thy reign: " + this.totalStarved + "\n\n" +
                            "---\n\n" +
                            "THE JUDGMENT OF THE GODS:\n\n" +
                            "May the annals of history remember thy name, O Hammurabi!\n\n" +
@@ -204,7 +204,7 @@ public class Hammurabi {
     public int askHowManyAcresToPlant(int acresOwned, int flock, int bushels) {
             while (true) {
                 int acresPlanted = getNumber("\nHow many acres shall thy farmers PLANT and CULTIVATE, O Great Hammurabi?");
-                if (this.storedBushels >= acresPlanted * 2 && acresPlanted <= this.flock * 10) {
+                if (this.storedBushels >= acresPlanted * 2 && acresPlanted <= this.flock * 10 && acresPlanted <= this.acresOwned) {
                         return acresPlanted;
                 } else {
                     if (storedBushels < acresPlanted * 2) {
