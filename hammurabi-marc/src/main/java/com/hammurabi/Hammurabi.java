@@ -48,38 +48,79 @@ public class Hammurabi {
     }
 
     private void processYearEnd(int grainForFood, int acresPlanted) {
-        int grainNeeded = flock * 20;
-        starved = (grainNeeded - grainForFood) / 20;
-        if (starved < 0) starved = 0;
+        
+        starved = starvationDeaths(flock, grainForFood);
         totalStarved += starved;
         flock -= starved;
 
-        if (starved > flock * 0.45) {
+        if (uprising(flock, starved)) {
             System.out.println("\nTHOU HAST FAILED THY PEOPLE!\n" +
                                "More than 45% of thy flock hath perished!\n" +
-                               "The people rise in rebellion!\n" +
+                               "An UPRISING HAS OCCURRED!\n" +
                                "Thy reign ends in disgrace!");
+
             System.exit(0);
         }
-        if (starved == 0) {
-            journeymen = rand.nextInt(6);
+
+        int plagueDeads = plagueDeaths(flock);
+        if (plagueDeads > 0) {
+            int plagueDeaths = flock / 2;
+            flock -= plagueDeaths;
+            System.out.println("\nA TERRIBLE PLAGUE HATH STRICKEN THY PEOPLE!\n" +
+                               plagueDeaths + " souls have perished!\n");
+        }
+
+        if (starved == 0 && plagueDeads == 0) {
+            journeymen = immigrants(flock, acresOwned, storedBushels);
             flock += journeymen;
         } else {
             journeymen = 0;
         }
 
-        grainPerAcre = rand.nextInt(6) + 1;
+        grainPerAcre = harvest(acresPlanted);
         harvested = acresPlanted * grainPerAcre;
         storedBushels += harvested;
 
-        if (rand.nextInt(100) < 40) {
-                clankersAte = storedBushels / (rand.nextInt(5) + 1);
+        int percentEaten = grainEatenByClankers(storedBushels);
+        if (percentEaten > 0) {
+                clankersAte = (storedBushels * percentEaten) / 100;
                 storedBushels -= clankersAte;
         } else {
                 clankersAte = 0;
         }
 
-        landPrice = rand.nextInt(7) + 17;
+        landPrice = newPriceOfLand();
+    }
+
+    public int plagueDeaths(int flock) {
+        if (rand.nextInt(100) < 15) {
+            return flock / 2;
+        }
+        return 0;
+    }
+
+    public int starvationDeaths(int flock, int grainForFood) {
+        int grainNeeded = flock * 20;
+        int deaths = (grainNeeded - grainForFood) / 20;
+        return deaths < 0 ? 0 : deaths;
+    }
+    public boolean uprising(int flock, int starved) {
+        return starved > flock * 0.45;
+    }
+    public int immigrants(int flock, int acresOwned, int storedBushels) {
+        return (20 * acresOwned + storedBushels) / (100 * flock) + 1;
+    }
+    public int harvest(int acresPlanted) {
+        return rand.nextInt(6) + 1;
+    }
+    public int grainEatenByClankers(int storedBushels) {
+        if (rand.nextInt(100) < 40) {
+            return rand.nextInt(21) + 10;
+        }
+        return 0;
+    }
+    public int newPriceOfLand() {
+        return rand.nextInt(7) + 17;
     }
 
     public void printRules() {
@@ -219,10 +260,16 @@ public class Hammurabi {
                                            "Each farmer may tend but 10 acres, yet thy command demands more hands than exist!\n\n" +
                                            "Even Kris and Paul cannot summon workers from the void!\n\n" +
                                            "Reconsider thy command, lest the fields lie fallow!\n");
-                    }
+                    } else if (acresPlanted > this.acresOwned) {
+                        System.out.println("IMPOSSIBLE, O GREAT HAMMURABI!\n\n" +
+                                           "Thy dominion encompasses but " + this.acresOwned + " acres of land!\n\n" +
+                                           "Thou canst not plant seeds upon fields that exist not!\n\n" +
+                                           "Raz herself cannot harvest from phantom soil!\n\n" +
+                                           "Speak a wiser decree, O Exalted One!\n");
                 }
             }
         }
+    }
  /**
   * Prints the given message (which should ask the user for some integral
   * quantity), and returns the number entered by the user. If the user's
@@ -232,7 +279,6 @@ public class Hammurabi {
   * @param message The request to present to the user.
   * @return The user's numeric response.
   */
-
 
      public int getNumber(String message) {
         while (true) {
